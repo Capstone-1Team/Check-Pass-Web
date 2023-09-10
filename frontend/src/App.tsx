@@ -1,9 +1,10 @@
 import "./App.module.scss";
+import LoginForm from "./Components/LoginPage/LoginPage";
 
 const App = () => {
   return (
     <div>
-      <h2>Check-Pass</h2>
+      <LoginForm />
     </div>
   );
 };
