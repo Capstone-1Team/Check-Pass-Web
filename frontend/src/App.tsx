@@ -1,10 +1,10 @@
 import "./App.module.scss";
-import LoginForm from "./Components/LoginPage/LoginPage";
+import LoginPage from "./Pages/LoginPage";
 
 const App = () => {
   return (
     <div>
-      <LoginForm />
+      <LoginPage />
     </div>
   );
 };

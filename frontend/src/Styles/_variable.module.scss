@@ -1,0 +1,20 @@
+/* color */
+$shadow-color: rgba(0, 0, 0, 0.1);
+$main-color: #3478f6;
+$font-white: white;
+$font-gray: #696969;
+$border-color: #dddfe2;
+
+$gradient-first: #015eea;
+$gradient-end: #00c0fa;
+
+/* image */
+$background-image: url("../../Assets/Image/loginPage-background.png");
+
+/* font */
+$main-font: "AppleTea-z8R1a";
+
+@font-face {
+  font-family: "AppleTea-z8R1a";
+  src: url(../../Assets/Font/AppleTea-z8R1a.woff);
+}
