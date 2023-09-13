@@ -9,10 +9,11 @@
   width: 450px;
   height: 350px;
 
-  box-shadow: 0 2px 4px $shadow-color, 0 8px 16px $shadow-color;
+  box-shadow: 0 2px 4px var(--shadow-color), 0 8px 16px var(--shadow-color);
   border-radius: 13px;
 
-  margin: 20px;
+  margin: 25px;
+  background-color: var(--form-background-color);
 
   & input {
     display: flex;
@@ -23,7 +24,8 @@
     width: 350px;
     height: 55px;
 
-    border: 1px solid $border-color;
+    background-color: var(--form-background-color);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
 
     font-size: 16px;
@@ -33,7 +35,7 @@
     width: 368px;
     height: 55px;
 
-    background-color: $main-color;
+    background-color: var(--main-color);
     border-radius: 8px;
     border: none;
 

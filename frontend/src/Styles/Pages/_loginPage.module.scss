@@ -1,4 +1,4 @@
-@import "../variable.module";
+@import "../_variable.module";
 
 .background {
   display: flex;
@@ -8,9 +8,23 @@
   width: 100vw;
   height: 100vh;
 
+  min-width: 1080px;
+
+  background-color: var(--background-color);
   background-image: $background-image;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+
+  transition: background-color 0.5s, color 0.3s;
+
+  .mode {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
+    top: 15px;
+    right: 15px;
+  }
 
   .container {
     display: flex;
@@ -36,7 +50,7 @@
 
         padding: 18px;
 
-        background: -webkit-linear-gradient($gradient-first, $gradient-end);
+        background: -webkit-linear-gradient(var(--gradient-first), var(--gradient-end));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -47,6 +61,8 @@
 
         padding-left: 23px;
         margin-bottom: 50px;
+
+        color: var(--font-color);
       }
     }
   }

@@ -1,18 +1,41 @@
-/* color */
-$shadow-color: rgba(0, 0, 0, 0.1);
-$main-color: #3478f6;
+/* light & dark mode color */
+
+:root {
+  --background-color: #fff;
+  --form-background-color: #fff;
+
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --main-color: #3478f6;
+
+  --border-color: #dddfe2;
+
+  --gradient-first: #015eea;
+  --gradient-end: #00c0fa;
+}
+
+.dark {
+  --background-color: #1c1c1c;
+  --form-background-color: #242424;
+
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --main-color: #3478f6;
+  --border-color: rgb(56, 56, 56);
+  --font-color: #d2d2d2;
+
+  --gradient-first: #015eea;
+  --gradient-end: #00c0fa;
+}
+
+/* font color */
+
 $font-white: white;
-$font-gray: #696969;
-$border-color: #dddfe2;
-
-$gradient-first: #015eea;
-$gradient-end: #00c0fa;
-
-/* image */
-$background-image: url("../../Assets/Image/loginPage-background.png");
+$font-gray: #7b7b7b;
 
 /* font */
 $main-font: "AppleTea-z8R1a";
+
+/* image */
+$background-image: url("../../Assets/Image/loginPage-background.png");
 
 @font-face {
   font-family: "AppleTea-z8R1a";
