@@ -1,21 +1,18 @@
-import styles from "../Styles/Pages/_loginPage.module.scss";
-import variable from "../Styles/_variable.module.scss";
 import LoginForm from "../Components/LoginPage/LoginForm";
+import styles from "../Styles/Pages/LoginPage/_loginPage.module.scss";
 import sunIcon from "../Assets/Image/sun.png";
 import moonIcon from "../Assets/Image/moon.png";
 import { useState } from "react";
+import { useTheme } from "../Contexts/DarkModeContext";
 
 const LoginPage = () => {
-  const [mode, setMode] = useState<boolean>(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
-  const changeMode = () => {
-    setMode(!mode);
   };
 
   return (
-    <div className={mode ? `${variable.dark} ${styles.background}` : `${styles.background}`}>
-      <img src={mode ? moonIcon : sunIcon} onClick={changeMode} className={styles.mode} />
-      <div className={styles.container}>
+    <div className={isDarkMode ? `${styles.dark} ${styles.background}` : `${styles.background}`}>
+      <img src={isDarkMode ? sunIcon : moonIcon} onClick={toggleTheme} className={styles.mode} />
         <div className={styles.logo_container}>
           <div className={styles.title}>
             <span>CHECKPASS</span>

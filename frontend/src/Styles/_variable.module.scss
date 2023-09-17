@@ -8,9 +8,17 @@
   --main-color: #3478f6;
 
   --border-color: #dddfe2;
+  --font-color: black;
 
-  --gradient-first: #015eea;
-  --gradient-end: #00c0fa;
+  --form-font-color: #242424;
+
+  --form-width: 450px;
+  --form-height: 350px;
+  --input-width: 350px;
+
+  --darkmode-icon: url("../../../Assets/Image/moon.png");
+
+  --flex-direction: row;
 }
 
 .dark {
@@ -20,22 +28,25 @@
   --shadow-color: rgba(0, 0, 0, 0.1);
   --main-color: #3478f6;
   --border-color: rgb(56, 56, 56);
-  --font-color: #d2d2d2;
 
-  --gradient-first: #015eea;
-  --gradient-end: #00c0fa;
+  --form-font-color: #d2d2d2;
+  --font-color: #fff;
+
+  --darkmode-icon: url("../../Assets/Image/sun.png");
+}
+
 }
 
 /* font color */
+
+$gradient-first: #015eea;
+$gradient-end: #00c0fa;
 
 $font-white: white;
 $font-gray: #7b7b7b;
 
 /* font */
-$main-font: "AppleTea-z8R1a";
-
-/* image */
-$background-image: url("../../Assets/Image/loginPage-background.png");
+$logo-font: "AppleTea-z8R1a";
 
 @font-face {
   font-family: "AppleTea-z8R1a";

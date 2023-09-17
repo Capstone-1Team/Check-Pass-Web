@@ -1,11 +1,17 @@
 import "./App.module.scss";
+import { DarkModeProvider } from "./Contexts/DarkModeContext";
 import LoginPage from "./Pages/LoginPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   return (
-    <div>
-      <LoginPage />
-    </div>
+    <BrowserRouter>
+      <DarkModeProvider>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </DarkModeProvider>
+    </BrowserRouter>
   );
 };
 
