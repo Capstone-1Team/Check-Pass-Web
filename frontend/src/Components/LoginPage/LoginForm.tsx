@@ -9,12 +9,12 @@ const LoginForm = () => {
           <input type="password" placeholder="비밀번호"></input>
         </form>
         <button className={styles.login_button}>로그인</button>
-        <tr className={styles.a_text}>
           <a className={styles.new_account} href={"/"}>
+        <div className={styles.a_text}>
             새 계정 만들기
           </a>
           <a href={"/"}>비밀번호 찾기</a>
-        </tr>
+        </div>
       </div>
     </div>
   );
