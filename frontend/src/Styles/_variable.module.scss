@@ -17,6 +17,7 @@
   --input-width: 350px;
 
   --darkmode-icon: url("../../../Assets/Image/moon.png");
+  --search-icon: url("../../../Assets/Image/search.png");
 
   --flex-direction: row;
 }
@@ -33,6 +34,7 @@
   --font-color: #fff;
 
   --darkmode-icon: url("../../Assets/Image/sun.png");
+  --search-icon: url("../../Assets/Image/search_dark.png");
 }
 
 }
@@ -47,6 +49,7 @@ $font-gray: #7b7b7b;
 
 /* font */
 $logo-font: "AppleTea-z8R1a";
+$main-font: "KakaoRegular";
 
 @font-face {
   font-family: "AppleTea-z8R1a";

@@ -1,0 +1,51 @@
+@import "../variable.module";
+
+.header {
+  display: flex;
+  justify-content: center;
+
+  position: fixed;
+
+  width: 100%;
+  height: 72px;
+
+  background-color: var(--background-color);
+
+  .wrap_header {
+    display: flex;
+    flex-direction: row;
+
+    width: 90%;
+    border-bottom: 1px solid var(--border-color);
+
+    h2 {
+      margin-left: 8px;
+      color: var(--font-color);
+    }
+
+    .area_util {
+      padding: 20px;
+      margin-left: auto;
+
+      .click_search {
+        background: var(--search-icon) no-repeat;
+        background-size: contain;
+        width: 25px;
+        height: 25px;
+
+        margin-right: 25px;
+
+        border: none;
+      }
+
+      .click_darkmode {
+        background: var(--darkmode-icon) no-repeat;
+        background-size: contain;
+        width: 25px;
+        height: 25px;
+
+        border: none;
+      }
+    }
+  }
+}
