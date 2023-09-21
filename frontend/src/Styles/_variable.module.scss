@@ -11,13 +11,21 @@
   --font-color: black;
 
   --form-font-color: #242424;
+  --title-font-size: 65px;
 
   --form-width: 450px;
   --form-height: 350px;
-  --input-width: 350px;
+  --signUp-padding: 0;
+
 
   --darkmode-icon: url("../../../Assets/Image/moon.png");
+
   --search-icon: url("../../../Assets/Image/search.png");
+  --email-icon: url("../../../Assets/Image/icon_user.png");
+  --password-icon: url("../../../Assets/Image/icon_lock.png");
+  --phone-icon: url("../../../Assets/Image/icon_phone.png");
+  --colleage-icon: url("../../../Assets/Image/icon_colleage.png");
+  --id-icon: url("../../../Assets/Image/icon_id.png");
 
   --flex-direction: row;
 }
@@ -34,7 +42,24 @@
   --font-color: #fff;
 
   --darkmode-icon: url("../../Assets/Image/sun.png");
+
   --search-icon: url("../../Assets/Image/search_dark.png");
+  --email-icon: url("../../../Assets/Image/icon_user_dark.png");
+  --password-icon: url("../../../Assets/Image/icon_lock_dark.png");
+  --phone-icon: url("../../../Assets/Image/icon_phone_dark.png");
+  --colleage-icon: url("../../../Assets/Image/icon_colleage_dark.png");
+  --id-icon: url("../../../Assets/Image/icon_id_dark.png");
+}
+
+.signUp {
+  --form-width: 450px;
+  --form-height: 630px;
+  --signUp-padding: 40px;
+
+  --title-font-size: 45px;
+
+  --flex-direction: column;
+}
 }
 
 }

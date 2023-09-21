@@ -6,7 +6,7 @@
   justify-content: center;
 
   width: 100vw;
-  height: 100vh;
+  height: 840px;
 
   min-width: 1080px;
 
@@ -15,8 +15,9 @@
 
   .mode {
     position: absolute;
-    width: 30px;
-    height: 30px;
+
+    width: 25px;
+    height: 25px;
 
     top: 15px;
     right: 15px;
@@ -34,7 +35,7 @@
 
     padding: 40px;
 
-    & .logo_container {
+    .logo_container {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -43,22 +44,22 @@
       width: 500px;
       height: 400px;
 
-      & .title {
+      .title {
         font-family: $logo-font;
-        font-size: 65px;
+        font-size: var(--title-font-size);
 
-        padding: 5px;
+        padding: var(--signUp-padding);
+        margin-left: -8px;
+        padding-bottom: 5px;
 
         background: -webkit-linear-gradient($gradient-first, $gradient-end);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
-      & .text {
+      .text {
         font-family: $main-font;
         font-size: 20px;
-
-        padding-left: 23px;
 
         color: var(--font-color);
       }
