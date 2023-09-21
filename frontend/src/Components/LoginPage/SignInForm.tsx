@@ -30,6 +30,10 @@ const LoginForm = ({ onSignUpClick, onFindPwClick }: any) => {
           </a>
           <a
             href={"/"}
+            onClick={(e) => {
+              e.preventDefault();
+              onFindPwClick();
+            }}
           >
             비밀번호 찾기
           </a>
