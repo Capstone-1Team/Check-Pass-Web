@@ -113,15 +113,14 @@
         background-size: 16px;
       }
 
-      .phone::before {
-        background-image: var(--phone-icon);
-        background-size: 13px;
-        margin-left: 2px;
+      .name::before {
+        background-image: var(--email-icon);
+        margin-left: -1px;
       }
 
       .user::before {
         background-image: var(--email-icon);
-        margin-left: -2px;
+        margin-left: -1px;
       }
 
       .id::before {
