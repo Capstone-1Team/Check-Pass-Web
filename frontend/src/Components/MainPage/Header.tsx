@@ -9,7 +9,6 @@ const Header = () => {
         <nav className={styles.wrap_header}>
           <h2>CHECKPASS</h2>
           <div className={styles.area_util}>
-            <button className={styles.click_search}></button>
             <button onClick={toggleTheme} className={styles.click_darkmode}></button>
           </div>
         </nav>
