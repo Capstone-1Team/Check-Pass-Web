@@ -3,6 +3,7 @@
 :root {
   --background-color: #fff;
   --form-background-color: #fff;
+  --bubble-color: #eee;
 
   --shadow-color: rgba(0, 0, 0, 0.1);
   --main-color: #3478f6;
@@ -20,8 +21,11 @@
   --form-header-top: 440px;
   --form-header-text-pd: 30px;
 
-  --darkmode-icon: url("../../../Assets/Image/moon.png");
+  --flex-direction: row;
 
+  /* icon */
+
+  --darkmode-icon: url("../../../Assets/Image/moon.png");
   --email-icon: url("../../../Assets/Image/LoginPage/Light/icon_user.png");
   --password-icon: url("../../../Assets/Image/LoginPage/Light/icon_lock.png");
   --colleage-icon: url("../../../Assets/Image/LoginPage/Light/icon_colleage.png");
@@ -30,12 +34,18 @@
   --check-on-icon: url("../../../Assets/Image/LoginPage/Light/icon_check_on.png");
   --envelope-icon: url("../../../Assets/Image/LoginPage/Light/icon_envelope.png");
 
-  --flex-direction: row;
+  /* image */
+
+  --beacon-image: url("../../../Assets/Image/MainPage/Light/beacon_light.png");
+  --attendance-image: url("../../../Assets/Image/MainPage/Light/attendance_light.png");
+  --lecture-image: url("../../../Assets/Image/MainPage/Light/lecture_light.png");
+  --bubble-image: url("../../../Assets/Image/MainPage/Light/bubble_light.png");
 }
 
 .dark {
-  --background-color: #1c1c1c;
+  --background-color: #171717;
   --form-background-color: #242424;
+  --bubble-color: #444;
 
   --shadow-color: rgba(0, 0, 0, 0.1);
   --main-color: #3478f6;
@@ -44,8 +54,9 @@
   --form-font-color: #d2d2d2;
   --font-color: #fff;
 
-  --darkmode-icon: url("../../Assets/Image/sun.png");
+  /* icon */
 
+  --darkmode-icon: url("../../Assets/Image/sun.png");
   --email-icon: url("../../../Assets/Image/LoginPage/Dark/icon_user_dark.png");
   --password-icon: url("../../../Assets/Image/LoginPage/Dark/icon_lock_dark.png");
   --colleage-icon: url("../../../Assets/Image/LoginPage/Dark/icon_colleage_dark.png");
@@ -53,6 +64,13 @@
   --check-icon: url("../../../Assets/Image/LoginPage/Dark/icon_check.png");
   --check-on-icon: url("../../../Assets/Image/LoginPage/Dark/icon_check_on.png");
   --envelope-icon: url("../../../Assets/Image/LoginPage/Dark/icon_envelope_dark.png");
+
+  /* image */
+
+  --beacon-image: url("../../../Assets/Image/MainPage/Dark/beacon_dark.png");
+  --attendance-image: url("../../../Assets/Image/MainPage/Dark/attendance_dark.png");
+  --lecture-image: url("../../../Assets/Image/MainPage/Dark/lecture_dark.png");
+  --bubble-image: url("../../../Assets/Image/MainPage/Dark/bubble_dark.png");
 }
 
 .signUp {

@@ -101,6 +101,8 @@ const SignUpForm = () => {
     ) {
       console.error("입력한 정보를 다시 확인해 주세요!");
       return;
+    } else {
+      console.log(userData);
     }
 
     try {
