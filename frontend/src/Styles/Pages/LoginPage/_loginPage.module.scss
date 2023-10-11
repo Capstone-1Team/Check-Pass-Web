@@ -10,6 +10,7 @@
 
   min-width: 1080px;
 
+  background-image: url("../../../Assets/Image/LoginPage/login_background.png");
   background-color: var(--background-color);
   transition: background-color 0.5s, color 0.3s;
 
@@ -51,10 +52,6 @@
         padding: var(--signUp-padding);
         margin-left: -8px;
         padding-bottom: 5px;
-
-        background: -webkit-linear-gradient($gradient-first, $gradient-end);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
 
       .text {
