@@ -1,5 +1,5 @@
-import styles from "../../Styles/Component/_header.module.scss";
-import { useTheme } from "../../Contexts/DarkModeContext";
+import styles from "../Styles/Component/_header.module.scss";
+import { useTheme } from "../Contexts/DarkModeContext";
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();

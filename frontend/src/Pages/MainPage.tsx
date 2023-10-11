@@ -1,4 +1,4 @@
-import Header from "../Components/MainPage/Header";
+import Header from "../Components/Header";
 import styles from "../Styles/Pages/MainPage/_mainPage.module.scss";
 import { useTheme } from "../Contexts/DarkModeContext";
 
