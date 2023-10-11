@@ -12,7 +12,7 @@
   border-radius: 13px;
 
   margin: 20px 40px 40px 40px;
-  background-color: var(--form-background-color);
+  background-color: #fff;
 
   .form_header {
     padding-bottom: var(--form-header-text-pd);
@@ -85,7 +85,7 @@
         width: 330px;
         height: 50px;
 
-        background-color: var(--form-background-color);
+        background-color: #fff;
         border: 1px solid var(--border-color);
         border-radius: 8px;
 
@@ -166,7 +166,7 @@
 
       select,
       input {
-        background-color: var(--form-background-color);
+        background-color: #fff;
         border: none;
         outline: none;
       }
