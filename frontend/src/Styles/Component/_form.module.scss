@@ -12,7 +12,7 @@
   border-radius: 13px;
 
   margin: 20px 40px 40px 40px;
-  background-color: #fff;
+  background-color: #ffffff6e;
 
   .form_header {
     padding-bottom: var(--form-header-text-pd);
@@ -34,7 +34,7 @@
       margin-top: -20px;
       padding-left: 25px;
 
-      color: $font-gray;
+      color: #000;
     }
   }
 
@@ -85,7 +85,7 @@
         width: 330px;
         height: 50px;
 
-        background-color: #fff;
+        background-color: #ffffff6e;
         border: 1px solid var(--border-color);
         border-radius: 8px;
 
@@ -166,7 +166,8 @@
 
       select,
       input {
-        background-color: #fff;
+        background-color: #ffffff00;
+
         border: none;
         outline: none;
       }
@@ -182,6 +183,7 @@
       input {
         font-size: 16px;
         color: var(--font-color);
+        background-color: #ffffff00;
       }
     }
 
@@ -202,8 +204,8 @@
         width: 70px;
         height: 40px;
 
-        background-color: var(--border-color);
-        color: $font-gray;
+        background-color: #ffffff6e;
+        color: #000;
         font-size: 18px;
 
         margin-right: 5px;
