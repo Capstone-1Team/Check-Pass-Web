@@ -9,10 +9,10 @@
   height: var(--form-height);
 
   box-shadow: 0 2px 4px var(--shadow-color), 0 8px 16px var(--shadow-color);
-  border-radius: 13px;
+  border-radius: 36px;
 
   margin: 20px 40px 40px 40px;
-  background-color: #ffffff6e;
+  background-color: #ffffffb4;
 
   .form_header {
     padding-bottom: var(--form-header-text-pd);
@@ -87,7 +87,7 @@
 
         background-color: #ffffff6e;
         border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border-radius: 20px;
 
         &::before {
           content: "";
@@ -193,7 +193,7 @@
         height: 55px;
 
         background-color: #000;
-        border-radius: 8px;
+        border-radius: 20px;
         border: none;
 
         font-size: 20px;
@@ -224,7 +224,7 @@
     display: flex;
     justify-content: center;
 
-    margin: 20px;
+    margin-top: 20px;
 
     .new_account {
       border-right: 1px solid $font-gray;
