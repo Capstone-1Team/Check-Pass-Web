@@ -7,7 +7,8 @@
   background-color: var(--background-color);
   font-family: $main-font;
 
-  min-width: 1400px;
+  min-width: 1450px;
+  max-width: 1460px;
 
   transition: background-color 0.5s, color 0.2s;
 
@@ -32,7 +33,7 @@
 
         .select_lecture,
         .select_class {
-          width: 200px;
+          width: 230px;
 
           margin: 20px 18px 0 0;
           padding: 7px;
@@ -94,8 +95,31 @@
 
         font-size: 20px;
         font-weight: 500;
-        font-family: $main-font;
       }
     }
   }
+}
+
+.code_button {
+  display: block;
+  position: absolute;
+
+  width: 155px;
+
+  top: 27%;
+  left: 85%;
+
+  padding: 10px;
+  margin-left: -19px;
+
+  font-size: 20px;
+  font-weight: 500;
+
+  border: none;
+  border-radius: 30px;
+
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+
+  color: #fff;
+  background: #000;
 }
