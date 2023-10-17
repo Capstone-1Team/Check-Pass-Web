@@ -16,6 +16,7 @@ const PORT = process.env.PORT;
 // Firebase Authentication 초기화
 app.use(bodyParser.json());
 app.use(cors());
+
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -62,6 +63,7 @@ app.post('/api/signUp', async (req: Request, res: Response, next) => {
         USER_TYPE: USER_TYPE
       });
       console.log("Document written with ID: ", docRef.id);
+      
       res.redirect("http://localhost:3000");
       // res.status(200).json({message: "User registration successful."}); // 사용자 등록이 성공한 경우 응답을 보냅니다.
     } catch (error) {
@@ -83,14 +85,17 @@ app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) =
   console.log(email, password);
 
   try {
-    // 이메일 및 비밀번호로 사용자 인증 시도
+    // Firebase 인증을 사용하여 이메일 및 비밀번호로 사용자 인증 시도
+    const auth = getAuth();
     const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
-    
-    // 로그인에 성공하면 사용자 정보를 세션에 저장 또는 필요에 따라 다른 작업 수행
+
+    // 사용자 인증에 성공한 경우, 사용자 정보와 Firebase Authentication 토큰을 클라이언트에게 반환
     const user = userCredential.user;
-    res.status(200).json({user});
+    const token = await admin.auth().createCustomToken(user.uid);
+
+    res.status(200).json({ user, token });
   } catch (error) {
-    // 로그인에 실패한 경우 오류 처리
+    // 사용자 인증에 실패한 경우 오류 처리
     console.error('로그인 오류:', error);
     res.status(401).send('로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.');
   }
