@@ -16,7 +16,10 @@
 
   --form-width: 450px;
   --form-height: 320px;
-  --signUp-padding: 0;
+  --form-pd: 40px 0 40px 0;
+
+  --signUp-mg: 13px;
+  --signUp-pd: 0;
 
   --form-header-top: 440px;
   --form-header-text-pd: 30px;
@@ -74,35 +77,41 @@
 }
 
 .signUp {
-  --form-width: 450px;
-  --form-height: 630px;
-  --signUp-padding: 40px;
+  --form-width: 435px;
+  --form-pd: 25px 0 25px 0;
+  --signUp-pd: 40px;
 
   --title-font-size: 45px;
 
   --flex-direction: column;
 }
 
+.error {
+  --signUp-mg: 0;
+  --border-color: red;
+}
+
 .findPw {
   --form-width: 420px;
-  --form-height: 190px;
 
-  --signUp-padding: 40px;
+  --signUp-pd: 40px;
+  --form-pd: 20px 0 20px 0;
+
   --title-font-size: 45px;
   --flex-direction: column;
 }
 
 .check {
   --form-width: 420px;
-  --form-height: 260px;
+  --flex-direction: column;
+
+  --signUp-pd: 40px;
+
+  --form-pd: 20px 0 20px 0;
+  --form-header-top: 390px;
 
   --title-font-size: 45px;
-  --flex-direction: column;
-  --signUp-padding: 40px;
-
   --form-header-text-pd: 40px;
-
-  --form-header-top: 390px;
 }
 
 /* font color */

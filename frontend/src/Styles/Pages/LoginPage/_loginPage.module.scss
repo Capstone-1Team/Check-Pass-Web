@@ -11,8 +11,8 @@
   min-width: 1080px;
 
   background-image: url("../../../Assets/Image/LoginPage/login_background.png");
+  background-size: cover;
   background-color: var(--background-color);
-  transition: background-color 0.5s, color 0.3s;
 
   .mode {
     position: absolute;
@@ -49,7 +49,7 @@
         font-family: $logo-font;
         font-size: var(--title-font-size);
 
-        padding: var(--signUp-padding);
+        padding: var(--signUp-pd);
         margin-left: -8px;
         padding-bottom: 5px;
       }

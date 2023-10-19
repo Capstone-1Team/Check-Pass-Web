@@ -6,13 +6,16 @@
   justify-content: center;
 
   width: var(--form-width);
-  height: var(--form-height);
 
   box-shadow: 0 2px 4px var(--shadow-color), 0 8px 16px var(--shadow-color);
   border-radius: 36px;
 
+  padding: 25px 0 25px 0;
+  padding: var(--form-pd);
   margin: 20px 40px 40px 40px;
   background-color: #ffffffb4;
+
+  overflow: auto;
 
   .form_header {
     padding-bottom: var(--form-header-text-pd);
@@ -72,7 +75,6 @@
     .form_section {
       display: flex;
       flex-direction: column;
-      align-items: center;
 
       .form_item {
         display: flex;
@@ -80,7 +82,7 @@
         position: relative;
 
         padding-left: 42px;
-        margin-bottom: 13px;
+        margin-bottom: var(--signUp-mg);
 
         width: 330px;
         height: 50px;
@@ -106,6 +108,13 @@
       .email::before {
         background-image: var(--email-icon);
         margin-left: -2px;
+      }
+
+      .error_message {
+        padding: 5px;
+        color: red;
+        font-size: 14px;
+        margin-top: 4px;
       }
 
       .password::before {
@@ -181,6 +190,8 @@
       }
 
       input {
+        width: 100%;
+
         font-size: 16px;
         color: var(--font-color);
         background-color: #ffffff00;
