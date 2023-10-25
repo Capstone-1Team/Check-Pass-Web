@@ -36,6 +36,7 @@ admin.initializeApp({
 
 const auth = getAuth();
 const db = admin.firestore();
+let userUid="";
 app.use(express.urlencoded({ extended: true }))
 /* POST code 추가 */
 app.post('/api/signUp', async (req: Request, res: Response, next) => {
@@ -81,9 +82,9 @@ app.post('/api/signUp', async (req: Request, res: Response, next) => {
 //로그인 로직 
 app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) => {
   const email= req.body.email;
-  // const email= "test123@test.com";
+  // const email= "test123@ga.co";
   const password = req.body.password;
-  // const password = "test123!!";
+  // const password = "asdasd123123!";
 
   console.log(email, password);
 
@@ -121,12 +122,40 @@ app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) =
 redirectUrl: "http://localhost:3000"});
     }
   });
-app.get('/signOut', async (req: Request, res: Response) => {
-  
-  const auth = getAuth();
-  signOut(auth).then(() => {
-  }).catch((error) => {
-  });
+
+app.get('/api/main',async (req: Request, res: Response, next: NextFunction) => {
+  const Uid = userUid;
+  try {
+    const userDocRef = db.collection('USERS').doc(Uid); // 해당 uid에 대한 사용자 정보를 가져옵니다.
+    const userDoc = await userDocRef.get();
+    const userdata: any[]=[];
+    if (!userDoc.exists) {
+      return res.status(401).json({ message: 'User not found' });
+    } else {
+      const Data: any = userDoc.data();
+      userdata.push(Data.USER_NAME);
+      userdata.push(Data.USER_NUMBER);
+    }
+    console.log(userdata);
+    return res.status(200).json({
+        USER_NAME:userdata[0],
+        USER_NUMBER:userdata[1]})
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return res.status(500).json({ message: 'Token verification error' });
+  }
+});
+app.get('/signOut', async (req: Request, res: Response, next: NextFunction)=> {
+  try {
+    const auth = getAuth();
+    await signOut(auth);
+    userUid = ""; // 현재 사용자 UID를 비웁니다.
+    return res.redirect("http://localhost:3000");
+  } catch (error) {
+    console.error('로그아웃 중에 오류가 발생했습니다:', error);
+    // 오류에 대한 적절한 응답을 처리합니다.
+    return res.status(500).send('서버 내부 오류');
+  }
 });
 
 // // 토큰에 대한 정보 확인 미들웨어 
@@ -156,18 +185,18 @@ app.get('/api/getAllUsers', async (req: Request, res: Response) => {
     const querySnapshot = await usersCollection.get();
 
     if (querySnapshot.empty) {
-      res.send('No users found.');
+     return res.send('No users found.');
     } else {
       const users: any[] = [];
       querySnapshot.forEach((doc) => {
         users.push(doc.data());
       });
 
-      res.json(users);
+      return res.json(users);
     }
   } catch (error) {
     console.error("Error retrieving users: ", error);
-    res.status(500).send(`Error: ${error}`);
+    return res.status(500).send(`Error: ${error}`);
   }
 });
 // app.get('/api/getUserDataByToken', async (req: Request, res: Response) => {
