@@ -126,7 +126,8 @@ const SignUpForm = () => {
     }
 
     try {
-      await axios.post("/api/signUp", userData);
+      const response = await axios.post("/api/signUp", userData);
+
       setUserData({
         USER_EMAIL: "",
         USER_PASSWORD: "",
@@ -137,8 +138,14 @@ const SignUpForm = () => {
         USER_COLLEGE: "",
         USER_DEPARTMENT: "",
       });
+
+      if (response.status === 201) {
+        window.location.href = response.data.redirectUrl;
+      } else {
+        console.log(`회원 가입 실패: ${response.data.message}`);
+      }
     } catch (e) {
-      console.error("가입 오류!", e);
+      console.error(`회원 가입 오류: ${e}`);
     }
   };
 
