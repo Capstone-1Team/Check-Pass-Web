@@ -107,7 +107,7 @@
 
       .email::before {
         background-image: var(--email-icon);
-        margin-left: -2px;
+        margin: -1px 0 0 -1px;
       }
 
       .error_message {
@@ -120,23 +120,23 @@
       .password::before {
         background-image: var(--password-icon);
         background-size: 16px;
+        margin: -3px 0 0 1px;
       }
 
       .name::before {
-        background-image: var(--email-icon);
-        margin-left: -1px;
+        background-image: var(--user-icon);
+        margin-top: -2px;
       }
 
       .user::before {
-        background-image: var(--email-icon);
-        margin-left: -1px;
+        background-image: var(--user-icon);
+        margin-top: -2px;
       }
 
       .id::before {
         background-image: var(--id-icon);
         background-size: 23px;
-        margin-left: -3px;
-        margin-top: 2px;
+        margin: 2px 0 0 -3px;
       }
 
       .colleage::before {
