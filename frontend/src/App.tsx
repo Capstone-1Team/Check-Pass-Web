@@ -13,6 +13,7 @@ const App = () => {
       <DarkModeProvider>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/login/:sign" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/beacon" element={<BeaconPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
