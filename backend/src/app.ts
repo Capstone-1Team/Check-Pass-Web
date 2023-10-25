@@ -65,17 +65,15 @@ app.post('/api/signUp', async (req: Request, res: Response, next) => {
         USER_TYPE: USER_TYPE
       });
       console.log("Document written with ID: ", userUid);
-      res.status(200).json({message: "User registration successful.",redirectUrl: "http://localhost:3000"}); // 사용자 등록이 성공한 경우 응답을 보냅니다.
+      return res.status(201).json({message: "User registration successful.",redirectUrl: "http://localhost:3000"}); // 사용자 등록이 성공한 경우 응답을 보냅니다.
       // res.status(200).send("http://localhost:3000");
       
     } catch (error) {
-      
       console.error("Error adding document: ", error);
-      next();
-      res.status(500).send(`Error: ${error}`);
+      return res.status(201).json(`Error: ${error}`);
     }
   } else {
-    res.status(200).redirect("/");
+    return res.status(201).json({message: "회원가입 실패"});
   };
 
 });
@@ -95,32 +93,32 @@ app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) =
     const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
     // 사용자 인증에 성공한 경우, 사용자 정보와 Firebase Authentication 토큰을 클라이언트에게 반환
     const user = userCredential.user;
-    const token = await admin.auth().createCustomToken(user.uid);
+    // const token = await admin.auth().createCustomToken(user.uid);
     const userdata: any[]=[];
+    userUid = user.uid;
     userdata.push(user.email);userdata.push(user.uid);
     const userDocRef = db.collection('USERS').doc(user.uid);
     const userDoc = await userDocRef.get();
-
     if (!userDoc.exists) {
-      res.send('No documents found.');
+      return 
     } else {
       const Data: any = userDoc.data();
       userdata.push(Data.USER_NAME);
       userdata.push(Data.USER_NUMBER);
     }
-    userdata.push(token);
     console.log(userdata);
-    res.status(200).json({Email:userdata[0],
-                          UserUID:userdata[1],
-                          USER_NAME:userdata[2],
-                          USER_NUMBER:userdata[3],
-                          USER_TOKEN:userdata[4],
-                          redirectUrl: "http://localhost:3000/main"});
+      // res.status(200).json({Email:userdata[0],
+      //   UserUID:userdata[1],
+      //   USER_NAME:userdata[2],
+      //   USER_NUMBER:userdata[3],
+      //   USER_TOKEN:userdata[4],
+      //   redirectUrl: "http://localhost:3000/main"});
+    return res.redirect("http://localhost:3000/main");
     } catch (error) {
       // 사용자 인증에 실패한 경우 오류 처리
       console.error('로그인 오류:', error);
-      res.status(401).json({  message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.",
-                              redirectUrl: "http://localhost:3000/main"});
+      return res.status(201).json({  message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.",
+redirectUrl: "http://localhost:3000"});
     }
   });
 app.get('/signOut', async (req: Request, res: Response) => {
@@ -172,12 +170,12 @@ app.get('/api/getAllUsers', async (req: Request, res: Response) => {
     res.status(500).send(`Error: ${error}`);
   }
 });
-app.get('/api/getUserDataByToken', async (req: Request, res: Response) => {
+// app.get('/api/getUserDataByToken', async (req: Request, res: Response) => {
 
-});
+// });
 
 app.get('/',(req:Request, res:Response, next)=>{
-  res.redirect('/');
+  return res.redirect('http://localhost:3000');
 })
 app.post('/process', (req: Request, res: Response, next) => {
   // const fieldValue = req.body.fieldValue;
