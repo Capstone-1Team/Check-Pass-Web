@@ -6,8 +6,6 @@ import * as admin from 'firebase-admin';
 import { getAuth, signOut, signInWithEmailAndPassword, UserCredential, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'; // Firebase JavaScript SDK의 메서드들을 불러옵니다.
 import dotenv from "dotenv";
 import cors from "cors";
-import { userInfo } from "os";
-
 
 dotenv.config();
 const serviceAccount = require('../firebase/serviceAccountKey.json');
@@ -66,37 +64,29 @@ app.post('/api/signUp', async (req: Request, res: Response, next) => {
         USER_TYPE: USER_TYPE
       });
       console.log("Document written with ID: ", userUid);
-      return res.status(201).json({message: "User registration successful.",redirectUrl: "http://localhost:3000"}); // 사용자 등록이 성공한 경우 응답을 보냅니다.
-      // res.status(200).send("http://localhost:3000");
+      return res.status(201).json({message: "성공적으로 회원가입이 완료되었습니다.",redirectUrl: "http://localhost:3000"}); // 사용자 등록이 성공한 경우 응답을 보냅니다.
       
     } catch (error) {
       console.error("Error adding document: ", error);
-      return res.status(201).json(`Error: ${error}`);
+      return res.status(500).json({message: "회원가입 도중에 문제가 생겼습니다."});
     }
   } else {
-    return res.status(201).json({message: "회원가입 실패"});
+    return res.status(401).json({message: "회원가입 실패"});
   };
 
 });
 
 //로그인 로직 
-app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) => {
+app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) => {
   const email= req.body.email;
-  // const email= "test123@ga.co";
   const password = req.body.password;
-  // const password = "asdasd123123!";
-
   console.log(email, password);
-
   try {
     // Firebase 인증을 사용하여 이메일 및 비밀번호로 사용자 인증 시도
     const auth = getAuth();
     const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
-    // 사용자 인증에 성공한 경우, 사용자 정보와 Firebase Authentication 토큰을 클라이언트에게 반환
     const user = userCredential.user;
-    // const token = await admin.auth().createCustomToken(user.uid);
     const userdata: any[]=[];
-    userUid = user.uid;
     userdata.push(user.email);userdata.push(user.uid);
     const userDocRef = db.collection('USERS').doc(user.uid);
     const userDoc = await userDocRef.get();
@@ -108,18 +98,14 @@ app.get('/api/signIn', async (req: Request, res: Response, next: NextFunction) =
       userdata.push(Data.USER_NUMBER);
     }
     console.log(userdata);
-      // res.status(200).json({Email:userdata[0],
-      //   UserUID:userdata[1],
-      //   USER_NAME:userdata[2],
-      //   USER_NUMBER:userdata[3],
-      //   USER_TOKEN:userdata[4],
-      //   redirectUrl: "http://localhost:3000/main"});
-    return res.redirect("http://localhost:3000/main");
+    userUid = user.uid;
+    return res.status(200).json({ message: "로그인에 성공했습니다.", redirectUrl: "http://localhost:3000/main" });
     } catch (error) {
       // 사용자 인증에 실패한 경우 오류 처리
-      console.error('로그인 오류:', error);
-      return res.status(201).json({  message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.",
-redirectUrl: "http://localhost:3000"});
+      console.error('로그인 오류_이메일 혹은 비밀번호가 틀립니다.');
+      return res.status(401).json({ message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.", redirectUrl: "http://localhost:3000"});
+    }
+  });
     }
   });
 
@@ -130,7 +116,7 @@ app.get('/api/main',async (req: Request, res: Response, next: NextFunction) => {
     const userDoc = await userDocRef.get();
     const userdata: any[]=[];
     if (!userDoc.exists) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: '유저를 찾을 수 없습니다.' });
     } else {
       const Data: any = userDoc.data();
       userdata.push(Data.USER_NAME);
@@ -141,10 +127,14 @@ app.get('/api/main',async (req: Request, res: Response, next: NextFunction) => {
         USER_NAME:userdata[0],
         USER_NUMBER:userdata[1]})
   } catch (error) {
-    console.error('Error verifying token:', error);
-    return res.status(500).json({ message: 'Token verification error' });
+    console.error('Error User Uid error:', error);
+    return res.status(403).json({ message: '로그인 정보를 찾을 수 없습니다',redirectUrl: "http://localhost:3000" });
   }
 });
+  }
+});
+
+//logout Logic 
 app.get('/signOut', async (req: Request, res: Response, next: NextFunction)=> {
   try {
     const auth = getAuth();
@@ -158,27 +148,7 @@ app.get('/signOut', async (req: Request, res: Response, next: NextFunction)=> {
   }
 });
 
-// // 토큰에 대한 정보 확인 미들웨어 
-// const verifyToken = async (req : Request, res:Response , next: NextFunction) => {
-//   // const idToken = req.Token;
-
-//   try {
-//     // const decodedToken = await admin.auth().verifyIdToken(idToken);
-//     // const uid = decodedToken.uid;
-//     // 여기서 uid를 사용하여 특정 사용자를 확인하고 작업을 수행할 수 있습니다.
-//     // 예: 데이터베이스에서 사용자 정보를 가져오는 등의 작업
-//     // ...
-
-//     // 특정 사용자에 대한 데이터를 가져온 후 다음 미들웨어로 이동
-//     // req.uid = uid;
-//     next();
-//   } catch (error) {
-//     // 토큰이 유효하지 않은 경우 에러 처리
-//     console.error('Invalid token:', error);
-//     res.sendStatus(403);
-//   }
-// };
-
+// 임시( 모든 사용자 데이터 불러오기 )
 app.get('/api/getAllUsers', async (req: Request, res: Response) => {
   try {
     const usersCollection = db.collection('USERS');
@@ -199,43 +169,19 @@ app.get('/api/getAllUsers', async (req: Request, res: Response) => {
     return res.status(500).send(`Error: ${error}`);
   }
 });
-// app.get('/api/getUserDataByToken', async (req: Request, res: Response) => {
 
-// });
 
+// localhost이동 
 app.get('/',(req:Request, res:Response, next)=>{
+  console.log(userUid);
+  if (userUid!=""){
+    return res.redirect('http://localhost:3000/main');  
+  }
   return res.redirect('http://localhost:3000');
 })
-app.post('/process', (req: Request, res: Response, next) => {
-  // const fieldValue = req.body.fieldValue;
-  // const fieldName = req.body.fieldName;
 
-  // console.log(fieldValue, fieldName);
 
-  // if (!fieldName || !fieldValue) {
-  //   res.status(400).send('Both fieldName and fieldValue are required.');
-  //   return;
-  // }
-
-  // db.collection('USERS')
-  //   .where()
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     if (querySnapshot.empty) {
-  //       res.send('No documents found.');
-  //     } else {
-  //       const documents: any[] = [];
-  //       querySnapshot.forEach((doc) => {
-  //         documents.push(doc.data().USER_NUMBER);
-  //       });
-  //       res.send(`Documents data: ${JSON.stringify(documents)}`);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).send(`Error: ${error}`);
-  //   });
-});
-
+//포트 시작번호
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
