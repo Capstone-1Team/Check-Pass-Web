@@ -106,11 +106,32 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
       return res.status(401).json({ message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.", redirectUrl: "http://localhost:3000"});
     }
   });
+  async function getLectureUid(lectureName:any){
+    const UserInputlecture = lectureName // 사용자에게 입력받은 강의 이름 
+    console.log(UserInputlecture);
+    var lectureUid = "";
+    try{
+      const lectureDocRef = db.collection('LECTURES'); // 사용자가 출석체크하고자 하는 강의의 UID를 찾습니다.
+      const getlectureUid = await lectureDocRef.where('LECTURE_NAME','==',lectureName).get();
+      getlectureUid.forEach((doc) => {
+        lectureUid = doc.id;
+      });
+    }catch(error){
+        console.log("찾지 못함");
+      }
+    console.log(lectureUid);
+    return lectureUid;
+  }
+
+  
     }
   });
 
+// Get 코드 
+// 메인 페이지에서 유저의 데이터 호출  
 app.get('/api/main',async (req: Request, res: Response, next: NextFunction) => {
   const Uid = userUid;
+  console.log(Uid);
   try {
     const userDocRef = db.collection('USERS').doc(Uid); // 해당 uid에 대한 사용자 정보를 가져옵니다.
     const userDoc = await userDocRef.get();
@@ -131,6 +152,35 @@ app.get('/api/main',async (req: Request, res: Response, next: NextFunction) => {
     return res.status(403).json({ message: '로그인 정보를 찾을 수 없습니다',redirectUrl: "http://localhost:3000" });
   }
 });
+
+// 유저의 강의 데이터 호출 
+app.get('/api/lecture',async (req: Request, res: Response, next: NextFunction) => {
+  const Uid = userUid;
+  console.log(userUid);
+  try {
+    const userDocRef = db.collection('USERS').doc(Uid); // 해당 uid에 대한 사용자 정보를 가져옵니다.
+    const userDoc = await userDocRef.get();
+    const userdata: any[]=[];
+    if (!userDoc.exists) {
+      return res.status(401).json({ message: '유저를 찾을 수 없습니다.' });
+    } else {
+      const Data: any = userDoc.data();
+      userdata.push(Data.USER_NAME);
+      userdata.push(Data.USER_NUMBER);
+      userdata.push(Data.LECTURES);
+      if (userdata[2] === null){
+        console.log(userdata);
+        return res.status(204).json({ message: '사용자의 강의 데이터가 비어있습니다.',redirectUrl: "http://localhost:3000/main" });
+      }
+    }
+    console.log(userdata);
+    return res.status(200).json({
+        USER_NAME:userdata[0],
+        USER_NUMBER:userdata[1],
+        USER_LECTURES:userdata[2]})
+  } catch (error) {
+    console.error('유저 UID 에러 :', error);
+    return res.status(403).json({ message: '로그인 정보를 찾을 수 없습니다',redirectUrl: "http://localhost:3000"});
   }
 });
 
