@@ -34,7 +34,7 @@ admin.initializeApp({
 
 const auth = getAuth();
 const db = admin.firestore();
-let userUid="";
+var userUid="";
 app.use(express.urlencoded({ extended: true }))
 /* POST code 추가 */
 app.post('/api/signUp', async (req: Request, res: Response, next) => {
@@ -106,6 +106,7 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
       return res.status(401).json({ message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.", redirectUrl: "http://localhost:3000"});
     }
   });
+
   async function getLectureUid(lectureName:any){
     const UserInputlecture = lectureName // 사용자에게 입력받은 강의 이름 
     console.log(UserInputlecture);
@@ -124,6 +125,60 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
   }
 
   
+  // 새로운 강의 데이터 추가 (임시)_ POST로 변경필요
+  app.get('/api/newUserLectureInsert', async (req: Request, res: Response, next) => {
+    const Uid = userUid;
+    if (Uid==""){
+      console.log("USER_UID 비어있음");
+      return null;
+    }
+    const New_LectruesUID = await getLectureUid('캡스톤 디자인');
+    console.log("NewLecturesUID = ",New_LectruesUID);
+    console.log("USER_UID = ", Uid);
+    try{
+      const userdocRef = await db.collection('USERS').doc(Uid);
+      const userDoc = await userdocRef.get();
+      if (!userDoc.exists) {
+        return res.status(401).json({ message: '유저를 찾을 수 없습니다.' });
+      } else {
+        const Data: any = userDoc.data();
+        let userLectures = Data.LECTURES || []; // 기존 강의 데이터가 없을 수 있으므로 기본값은 빈 배열로 설정합니다.
+        if (userLectures.length === 0){
+          await userdocRef.update({
+            LECTURES: [New_LectruesUID]
+          });
+          console.log("정상적으로 데이터 추가가 완료되었습니다.");
+          // const New_LectruesString: string = New_LectruesUID;
+          // const AttendancedocRef = await db.collection('ATTENDANCE').doc(New_LectruesString);
+          // const AttendanceDoc = await AttendancedocRef.get();
+          // const userdata: any[] = [];
+          // if (!AttendanceDoc.exists) {
+          //   return res.status(401).json({ message: '강의에 대한 유저를 찾을 수 없습니다' });
+          // } else {
+          //   const LectureData: any = AttendanceDoc.data();
+          //   userdata.push(LectureData.userUid);
+          //   console.log(userdata);
+          //   if (userdata.length === 0) {
+          //     return res.status(204).json({ message: '사용자의 강의 데이터가 비어있습니다.', redirectUrl: "http://localhost:3000/main" });
+          //   }
+          //   console.log("강의에 대한 출석체크 리스트 :", userdata);
+          // }
+          return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+        } else if (!userLectures.includes(New_LectruesUID)) {
+          userLectures.push(New_LectruesUID);
+          await userdocRef.update({
+            LECTURES: userLectures
+          });
+          console.log("정상적으로 데이터 추가가 완료되었습니다.");
+          return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+        }else{
+          console.log("이미 추가된 강의입니다.");
+          return res.status(200).json({ message: "이미 추가된 강의입니다." });
+        }
+      }
+    } catch(error){
+      console.error("강의 데이터 추가 중 오류발생", error);
+      return res.status(500).json({ message: "강의 데이터 추가 중 오류가 발생했습니다." });
     }
   });
 
