@@ -5,6 +5,9 @@
   --card-background-color: #fff;
   --bubble-color: #eee;
 
+  --lecture-border-color: #dedede;
+  --select-background-color: #fff;
+
   --shadow-color: rgba(0, 0, 0, 0.1);
   --main-color: #3478f6;
 
@@ -28,22 +31,23 @@
 
   /* icon */
 
-  --darkmode-icon: url("../../../Assets/Image/moon.png");
-  --email-icon: url("../../../Assets/Image/LoginPage/icon_mail.png");
-  --user-icon: url("../../../Assets/Image/LoginPage/icon_user.png");
-  --password-icon: url("../../../Assets/Image/LoginPage/icon_lock.png");
-  --colleage-icon: url("../../../Assets/Image/LoginPage/icon_colleage.png");
-  --id-icon: url("../../../Assets/Image/LoginPage/icon_id.png");
-  --check-icon: url("../../../Assets/Image/LoginPage/icon_check.png");
-  --check-on-icon: url("../../../Assets/Image/LoginPage/icon_check_on.png");
-  --envelope-icon: url("../../../Assets/Image/LoginPage/icon_envelope.png");
+  --darkmode-icon: url('../../../Assets/Image/moon.png');
+  --email-icon: url('../../../Assets/Image/LoginPage/icon_mail.png');
+  --user-icon: url('../../../Assets/Image/LoginPage/icon_user.png');
+  --password-icon: url('../../../Assets/Image/LoginPage/icon_lock.png');
+  --colleage-icon: url('../../../Assets/Image/LoginPage/icon_colleage.png');
+  --id-icon: url('../../../Assets/Image/LoginPage/icon_id.png');
+  --check-icon: url('../../../Assets/Image/LoginPage/icon_check.png');
+  --check-on-icon: url('../../../Assets/Image/LoginPage/icon_check_on.png');
+  --envelope-icon: url('../../../Assets/Image/LoginPage/icon_envelope.png');
+  --search-icon: url('../../../Assets/Image/LecturePage/search_light.png');
 
   /* image */
 
-  --beacon-image: url("../../../Assets/Image/MainPage/Light/beacon_light.png");
-  --attendance-image: url("../../../Assets/Image/MainPage/Light/attendance_light.png");
-  --lecture-image: url("../../../Assets/Image/MainPage/Light/lecture_light.png");
-  --bubble-image: url("../../../Assets/Image/MainPage/Light/bubble_light.png");
+  --beacon-image: url('../../../Assets/Image/MainPage/Light/beacon_light.png');
+  --attendance-image: url('../../../Assets/Image/MainPage/Light/attendance_light.png');
+  --lecture-image: url('../../../Assets/Image/MainPage/Light/lecture_light.png');
+  --bubble-image: url('../../../Assets/Image/MainPage/Light/bubble_light.png');
 }
 
 .dark {
@@ -51,23 +55,27 @@
   --card-background-color: #242424;
   --bubble-color: #444;
 
+  --lecture-border-color: #414141;
+  --select-background-color: #444;
+
   --shadow-color: rgba(0, 0, 0, 0.1);
   --main-color: #3478f6;
-  --border-color: rgb(56, 56, 56);
+  --border-color: #383838;
 
   --form-font-color: #d2d2d2;
   --font-color: #fff;
 
   /* icon */
 
-  --darkmode-icon: url("../../Assets/Image/sun.png");
+  --darkmode-icon: url('../../Assets/Image/sun.png');
+  --search-icon: url('../../../Assets/Image/LecturePage/search_dark.png');
 
   /* image */
 
-  --beacon-image: url("../../../Assets/Image/MainPage/Dark/beacon_dark.png");
-  --attendance-image: url("../../../Assets/Image/MainPage/Dark/attendance_dark.png");
-  --lecture-image: url("../../../Assets/Image/MainPage/Dark/lecture_dark.png");
-  --bubble-image: url("../../../Assets/Image/MainPage/Dark/bubble_dark.png");
+  --beacon-image: url('../../../Assets/Image/MainPage/Dark/beacon_dark.png');
+  --attendance-image: url('../../../Assets/Image/MainPage/Dark/attendance_dark.png');
+  --lecture-image: url('../../../Assets/Image/MainPage/Dark/lecture_dark.png');
+  --bubble-image: url('../../../Assets/Image/MainPage/Dark/bubble_dark.png');
 }
 
 .signUp {
@@ -117,10 +125,10 @@ $font-white: white;
 $font-gray: #7b7b7b;
 
 /* font */
-$logo-font: "AppleTea-z8R1a";
-$main-font: "KakaoRegular";
+$logo-font: 'AppleTea-z8R1a';
+$main-font: 'KakaoRegular';
 
 @font-face {
-  font-family: "AppleTea-z8R1a";
+  font-family: 'AppleTea-z8R1a';
   src: url(../../Assets/Font/AppleTea-z8R1a.woff);
 }

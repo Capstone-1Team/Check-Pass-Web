@@ -1,4 +1,4 @@
-@import "../variable.module";
+@import '../variable.module';
 
 .form_container {
   display: flex;
@@ -10,7 +10,6 @@
   box-shadow: 0 2px 4px var(--shadow-color), 0 8px 16px var(--shadow-color);
   border-radius: 36px;
 
-  padding: 25px 0 25px 0;
   padding: var(--form-pd);
   margin: 20px 40px 40px 40px;
   background-color: #ffffffb4;
@@ -21,7 +20,7 @@
     padding-bottom: var(--form-header-text-pd);
 
     &::after {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
 
@@ -92,7 +91,7 @@
         border-radius: 20px;
 
         &::before {
-          content: "";
+          content: '';
           position: absolute;
 
           background-size: 20px;
@@ -146,7 +145,7 @@
       }
 
       .colleage::after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
 

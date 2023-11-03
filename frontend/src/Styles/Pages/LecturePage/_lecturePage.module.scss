@@ -1,0 +1,218 @@
+@import '../../variable.module';
+
+.container {
+  width: 100vw;
+  height: 850px;
+  background-color: var(--background-color);
+
+  font-family: $main-font;
+
+  min-width: 1400px;
+  transition: background-color 0.5s, color 0.2s;
+
+  .main_content {
+    width: 100%;
+    height: 100%;
+
+    .content_article {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 90%;
+      height: 100%;
+
+      margin: auto;
+
+      padding-top: 72px;
+      box-sizing: border-box;
+
+      .left_container {
+        width: 47%;
+        height: 100%;
+
+        .select_semester,
+        .lecture_container {
+          box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.15);
+        }
+
+        .select_semester {
+          width: 230px;
+
+          margin: 20px 18px 0 0;
+          padding: 7px;
+
+          border: none;
+          outline: none;
+          border-radius: 6px;
+
+          font-size: 22px;
+
+          color: var(--font-color);
+          background-color: var(--select-background-color);
+        }
+
+        .lecture_container {
+          display: flex;
+          flex-direction: column;
+
+          width: 100%;
+          height: 677px;
+
+          margin-top: 20px;
+          padding: 25px;
+
+          border: 1px solid var(--lecture-border-color);
+          border-radius: 25px;
+          box-sizing: border-box;
+
+          .lecture_title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 115px;
+            padding: 7px;
+
+            border-radius: 20px;
+
+            font-size: 16px;
+            color: var(--font-color);
+            background-color: var(--bubble-color);
+          }
+
+          .wrap_search {
+            display: flex;
+            flex-direction: row;
+
+            .search_lecture {
+              width: 90%;
+
+              font-size: 22px;
+              text-indent: 5px;
+
+              margin: 25px 0 20px 5px;
+              padding-bottom: 7px;
+
+              border-bottom: 1px solid var(--lecture-border-color);
+              border-width: 0 0 1px;
+              outline: none;
+
+              background-color: #ffffff00;
+            }
+
+            .search_icon {
+              margin: 25px 0 0 15px;
+
+              width: 32px;
+              height: 32px;
+
+              border: none;
+              cursor: pointer;
+
+              background: var(--search-icon) no-repeat;
+              background-size: contain;
+            }
+          }
+
+          .wrap_card {
+            width: 100%;
+            height: 98%;
+
+            margin-left: 4px;
+            overflow: auto;
+
+            .lecture_card {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+
+              width: 98%;
+              height: 160px;
+
+              padding: 15px;
+              margin-bottom: 20px;
+
+              border-radius: 20px;
+              border: 1px solid var(--lecture-border-color);
+              box-sizing: border-box;
+
+              .lecture,
+              .professor,
+              .lecture_time,
+              .location,
+              .details {
+                margin-bottom: 7px;
+              }
+
+              .lecture_time,
+              .location,
+              .details {
+                color: #767676;
+                font-size: 14px;
+              }
+
+              .lecture {
+                margin-top: 7px;
+
+                color: var(--font-color);
+                font-size: 20px;
+                font-weight: 600;
+              }
+
+              .professor {
+                color: var(--form-font-color);
+              }
+            }
+
+            .lecture_card:last-child {
+              margin-bottom: 0;
+            }
+          }
+
+          .wrap_card::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      }
+
+      .schedule_table {
+        display: flex;
+
+        width: 50%;
+        height: 735px;
+
+        border: 1px solid var(--lecture-border-color);
+        border-radius: 12px;
+
+        table {
+          width: 100%;
+          height: 100%;
+
+          border-collapse: collapse;
+          border-radius: 10px;
+
+          border-style: hidden;
+          box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.15);
+
+          .hours {
+            .time_cell {
+              width: 35px;
+            }
+          }
+
+          th,
+          td {
+            border: 1px solid var(--lecture-border-color);
+            padding: 8px;
+            text-align: center;
+          }
+
+          th {
+            color: var(--form-font-color);
+          }
+        }
+      }
+    }
+  }
+}

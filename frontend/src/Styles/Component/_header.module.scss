@@ -1,4 +1,4 @@
-@import "../variable.module";
+@import '../variable.module';
 
 .header {
   display: flex;
@@ -9,6 +9,7 @@
   height: 72px;
 
   min-width: 1450px;
+  font-family: $logo-font;
 
   background-color: var(--background-color);
   transition: background-color 0.5s, color 0.2s;
