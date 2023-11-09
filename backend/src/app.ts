@@ -1,21 +1,25 @@
 import express, { NextFunction, Request, Response} from "express";
 import bodyParser from "body-parser";
 import * as firebase from 'firebase/app';
+import "firebase/database";
+import 'firebase/firestore';
+import { getDatabase, ref, child, push, update, get,  onValue, set } from "firebase/database";
 import 'firebase/auth';
 import * as admin from 'firebase-admin';
-import { getAuth, signOut, signInWithEmailAndPassword, UserCredential, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'; // Firebase JavaScript SDK의 메서드들을 불러옵니다.
+import { getAuth, signOut, signInWithEmailAndPassword, UserCredential, createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth'; // Firebase JavaScript SDK의 메서드들을 불러옵니다.
 import dotenv from "dotenv";
 import cors from "cors";
 
 dotenv.config();
-const serviceAccount = require('../firebase/serviceAccountKey.json');
 const app = express();
-const PORT = process.env.PORT;
-
-// Firebase Authentication 초기화
+const PORT = process.env.PORT; // Port번호 정의 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+const router = express.Router();
 
+//데이터베이스 변수, 초기화 코드입니다. 
+const serviceAccount = require('../firebase/serviceAccountKey.json');
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -23,20 +27,21 @@ const firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId:process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId:process.env.FIREBASE_APP_ID,
-  measurementId:process.env.FIREBASE_MEASUREMENT_ID
+  measurementId:process.env.FIREBASE_MEASUREMENT_ID,
+  databaseURL:process.env.FIREBASE_URL
 };
-
-const router = express.Router();
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
-
+const database = getDatabase(); 
+const dbRef = ref(database);
 const auth = getAuth();
 const db = admin.firestore();
-var userUid="";
-app.use(express.urlencoded({ extended: true }))
-/* POST code 추가 */
+// 서버에서 임시로 사용자 Uid를 저장해주는 변수입니다.
+let userUid=""; 
+
+// 회원가입 로직 _ POST
 app.post('/api/signUp', async (req: Request, res: Response, next) => {
   const USER_NAME = req.body.USER_NAME;
   const USER_TYPE = req.body.USER_TYPE;
@@ -126,7 +131,19 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
     return lectureUid;
   }
 
-  
+  //사용자가 새로운 강의를 추가하였을때 실시간데이터베이스에 추가하는 함수
+  async function newLecturesAttendance(lectureUID:any){
+    const weekArray: boolean[] = new Array(15).fill(false);
+    try {
+      await set(child(dbRef, `Attendance/${lectureUID}/${userUid}`), weekArray);
+      return true;
+    } catch (error) {
+      console.error('데이터를 쓰는 중 오류가 발생했습니다:', error);
+      return false;
+    }
+  }
+ 
+
   // 새로운 강의 데이터 추가 (임시)_ POST로 변경필요
   app.get('/api/newUserLectureInsert', async (req: Request, res: Response, next) => {
     const Uid = userUid;
@@ -319,6 +336,73 @@ app.get('/api/getRandom', async (req: Request, res: Response) => {
   }catch(error){
     console.log(error);
     return res.status(500).json({message: "랜덤 문자열 생성에 문제가 발생했습니다."});
+  }
+});
+
+
+// 전자출결 랜덤 문자열 확인 ( 임시 ) _ Post로 수정필요
+app.get('/api/CheckRandom', async (req: Request, res: Response) => {
+  const userinsertRandomString = RandomString; // Post로 사용자가 입력한 문자열을 받아와야 합니다.
+  const timeStamp = admin.firestore.Timestamp.fromDate(new Date(Date.now()));
+  const LectureUid = '442184-1'; // Post로 강의 이름 or Uid를 받아와야 합니다 ( )
+  const nowweek = 7; // Post로 입력 받아와야 합니다 ( 출석하고자 하는 주차 )
+  const userDoc = await db.collection('E-ATTENDANCE').doc(LectureUid).get();
+  let Attendancedata =[];
+  if (!userDoc.exists) {
+    return res.status(401).json({ message: '전자출결 데이터를 불러올 수 없습니다.' });
+  } else {
+    const Data: any = userDoc.data();
+    Attendancedata.push(Data.RANDOM_CODE);
+    Attendancedata.push(Data.START_STAMP);
+    Attendancedata.push(Data.END_STAMP);
+  }
+  console.log(Attendancedata);
+  if (Attendancedata[1] < timeStamp && Attendancedata[2] > timeStamp && Attendancedata[0] == userinsertRandomString) {
+    try {
+        let weekArray: any[] = [];
+        let obj: any = {};
+        const snapshot = await get(child(dbRef, `Attendance/${LectureUid}/${userUid}`));
+        if (snapshot.exists()) {
+            weekArray = snapshot.val(); // 데이터를 배열에 저장합니다.
+            weekArray[nowweek] = true; // 첫 번째 값을 true로 변경합니다.
+            for (let i = 0; i < weekArray.length; i++) {
+                obj[`${i}`] = weekArray[i];
+            }
+            console.log(weekArray);
+            await update(child(dbRef, `Attendance/${LectureUid}/${userUid}`), obj);
+            console.log("데이터가 성공적으로 업데이트되었습니다.");
+            return res.status(201).json({ message: '정상적으로 출석되었습니다.' });
+        } else {
+            return res.status(404).json({ message: '출석 데이터가 없습니다.' });
+        }
+    } catch (error) {
+        console.error('데이터를 쓰는 중 오류가 발생했습니다:', error);
+        return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+  } else {
+      return res.status(204).json({ message: '시간초과입니다.' });
+  }
+});
+
+
+//사용자의 출석 현황을 파악하기 위한 코드 => post로 수정필요, 강의 데이터(강의명 or Uid)를 불러와야합니다. 
+app.get('/api/getUserAttendance', async (req: Request, res: Response) => {
+  const LectureName = '캡스톤디자인Ⅰ'// 어떤 강의에 대한 출석 현황인지 데이터를 가져와야합니다 (해당 Post로 입력 받아야 합니다.)
+  const LectruesUID = await getLectureUid(LectureName); 
+  console.log(userUid, LectruesUID);
+  try {
+    // 데이터 읽기
+    onValue(child(dbRef, `Attendance/${LectruesUID}/${userUid}`), (snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return res.status(200).json(snapshot.val()); // 데이터를 응답으로 전송
+      } else {
+        return res.status(404).json({ message: '데이터가 없습니다.' });
+      }
+    });
+  } catch (error) {
+    console.error('데이터를 읽는 중 오류가 발생했습니다:', error);
+    return res.status(500).json({ message: '서버 내부 오류' });
   }
 });
 
