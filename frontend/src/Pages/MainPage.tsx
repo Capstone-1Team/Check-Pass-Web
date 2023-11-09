@@ -26,9 +26,9 @@ const MainPage = () => {
             <image className={styles.background_image}></image>
             <div className={styles.main_title}>
               <span>
-                캡스톤 디자인 1팀
+                {userName.slice(1)} 님 안녕하세요
                 <br />
-                CHECKPASS입니다
+                어떤 서비스를 도와드릴까요?
               </span>
             </div>
           </div>
