@@ -81,7 +81,7 @@ app.post('/api/signUp', async (req: Request, res: Response, next) => {
 
 });
 
-//로그인 로직 
+//로그인 로직 _ POST
 app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) => {
   const email= req.body.email;
   const password = req.body.password;
@@ -96,7 +96,7 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
     const userDocRef = db.collection('USERS').doc(user.uid);
     const userDoc = await userDocRef.get();
     if (!userDoc.exists) {
-      return 
+      return res.status(401).json({ message: '유저를 찾을 수 없습니다.' });
     } else {
       const Data: any = userDoc.data();
       userdata.push(Data.USER_NAME);
@@ -104,15 +104,15 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
     }
     console.log(userdata);
     userUid = user.uid;
+    return res
+    .status(200)
+    .json({ message: '로그인에 성공했습니다.', redirectUrl: `http://localhost:3000/main/${userdata[3]}` });
     } catch (error) {
       // 사용자 인증에 실패한 경우 오류 처리
       console.error('로그인 오류_이메일 혹은 비밀번호가 틀립니다.');
       return res.status(401).json({ message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.", redirectUrl: "http://localhost:3000"});
     }
   });
-    return res
-      .status(200)
-      .json({ message: '로그인에 성공했습니다.', redirectUrl: `http://localhost:3000/main/${userdata[3]}` });
 
 // 강의의 이름으로 Uid를 가져오는 함수 (ex. 캡스톤 디자인 -> 441...)
   async function getLectureUid(lectureName:any){
