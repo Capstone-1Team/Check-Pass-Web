@@ -99,13 +99,15 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
     }
     console.log(userdata);
     userUid = user.uid;
-    return res.status(200).json({ message: "로그인에 성공했습니다.", redirectUrl: "http://localhost:3000/main" });
     } catch (error) {
       // 사용자 인증에 실패한 경우 오류 처리
       console.error('로그인 오류_이메일 혹은 비밀번호가 틀립니다.');
       return res.status(401).json({ message:"로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다.", redirectUrl: "http://localhost:3000"});
     }
   });
+    return res
+      .status(200)
+      .json({ message: '로그인에 성공했습니다.', redirectUrl: `http://localhost:3000/main/${userdata[3]}` });
 
   async function getLectureUid(lectureName:any){
     const UserInputlecture = lectureName // 사용자에게 입력받은 강의 이름 
