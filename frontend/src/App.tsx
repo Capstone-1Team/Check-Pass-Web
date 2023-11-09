@@ -14,10 +14,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login/:sign" element={<LoginPage />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/beacon" element={<BeaconPage />} />
-          <Route path="/attendance" element={<AttendancePage />} />
-          <Route path="/lecture" element={<LecturePage />} />
+          <Route path="/main/:userNumber" element={<MainPage />} />
+          <Route path="/beacon/:userNumber" element={<BeaconPage />} />
+          <Route path="/attendance/:userNumber" element={<AttendancePage />} />
+          <Route path="/lecture/:userNumber" element={<LecturePage />} />
         </Routes>
       </DarkModeProvider>
     </BrowserRouter>

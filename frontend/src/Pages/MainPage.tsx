@@ -1,9 +1,21 @@
-import Header from "../Components/Header";
-import styles from "../Styles/Pages/MainPage/_mainPage.module.scss";
-import { useTheme } from "../Contexts/DarkModeContext";
+import Header from '../Components/Header';
+import styles from '../Styles/Pages/MainPage/_mainPage.module.scss';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useTheme } from '../Contexts/DarkModeContext';
 
 const MainPage = () => {
   const { isDarkMode } = useTheme();
+  const [userNumber, setUserNumber] = useState('');
+
+  useEffect(() => {
+    axios
+      .get('/api/main')
+      .then((res) => {
+        setUserNumber(res.data.USER_NUMBER);
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
     <div className={isDarkMode ? `${styles.dark} ${styles.container}` : `${styles.container}`}>
@@ -27,7 +39,7 @@ const MainPage = () => {
                   <image className={`${styles.card_icon} ${styles.beacon}`}></image>
                   <span className={styles.title_bubble}>메인 서비스</span>
                 </span>
-                <a className={styles.card_link} href="/beacon">
+                <a className={styles.card_link} href={`/beacon/${userNumber}`}>
                   <strong className={styles.card_title}>비콘으로 출석하기</strong>
                   <span className={styles.card_hashtag}>
                     <span className={styles.card_keyword}>#빠르고 편리한 출결</span>
@@ -46,7 +58,7 @@ const MainPage = () => {
                       <image className={`${styles.card_icon} ${styles.megaphone}`}></image>
                       <span className={styles.title_bubble}>비콘이 이상하다면?</span>
                     </span>
-                    <a className={styles.card_link} href="/attendance">
+                    <a className={styles.card_link} href={`/attendance/${userNumber}`}>
                       <strong className={styles.card_title}>전자출결으로 출석하기</strong>
                       <span className={styles.card_hashtag}>
                         <span className={styles.card_keyword}>#랜덤 코드 출석</span>
@@ -63,7 +75,7 @@ const MainPage = () => {
                       <image className={`${styles.card_icon} ${styles.lecture}`}></image>
                       <span className={styles.title_bubble}>어떤 강의가 있을까</span>
                     </span>
-                    <a className={styles.card_link} href="/lecture">
+                    <a className={styles.card_link} href={`/lecture/${userNumber}`}>
                       <strong className={styles.card_title}>강의 등록하러 가기</strong>
                       <span className={styles.card_hashtag}>
                         <span className={styles.card_keyword}>#개설 강의 확인</span>
