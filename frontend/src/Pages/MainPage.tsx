@@ -6,12 +6,14 @@ import { useTheme } from '../Contexts/DarkModeContext';
 
 const MainPage = () => {
   const { isDarkMode } = useTheme();
+  const [userName, setUserName] = useState('');
   const [userNumber, setUserNumber] = useState('');
 
   useEffect(() => {
     axios
       .get('/api/main')
       .then((res) => {
+        setUserName(res.data.USER_NAME);
         setUserNumber(res.data.USER_NUMBER);
       })
       .catch((e) => console.log(e));
@@ -26,9 +28,9 @@ const MainPage = () => {
             <image className={styles.background_image}></image>
             <div className={styles.main_title}>
               <span>
-                캡스톤 디자인 1팀
+                {userName.slice(1)} 님 안녕하세요
                 <br />
-                CHECKPASS입니다
+                어떤 서비스를 도와드릴까요?
               </span>
             </div>
           </div>
