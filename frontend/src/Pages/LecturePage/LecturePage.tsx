@@ -1,14 +1,20 @@
 import Header from '../../Components/Header';
 import { useTheme } from '../../Contexts/DarkModeContext';
-import LectureCard from './LectureCard';
 import { lectures } from './Lectures';
+import { useState } from 'react';
+import LectureCard from './LectureCard';
 import styles from '../../Styles/Pages/LecturePage/_lecturePage.module.scss';
 
 const LecturePage = () => {
   const { isDarkMode } = useTheme();
+  const [searchLecture, setSearchLecture] = useState('');
 
   const days = ['월', '화', '수', '목', '금', '토'];
   const hours = Array.from({ length: 13 }, (_, index) => `${index + 9}시`);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchLecture(e.target.value);
+  };
 
   return (
     <div className={isDarkMode ? `${styles.dark} ${styles.container}` : `${styles.container}`}>
@@ -22,20 +28,27 @@ const LecturePage = () => {
             <div className={styles.lecture_container}>
               <span className={styles.lecture_title}>과목명으로 찾기</span>
               <div className={styles.wrap_search}>
-                <input className={styles.search_lecture} placeholder="과목명을 입력하세요"></input>
+                <input
+                  className={styles.search_lecture}
+                  placeholder="과목명을 입력하세요"
+                  value={searchLecture}
+                  onChange={handleSearchChange}
+                ></input>
                 <button className={styles.search_icon}></button>
               </div>
               <div className={styles.wrap_card}>
-                {lectures.map((lectureInfo, index) => (
-                  <LectureCard
-                    key={index}
-                    lecture={lectureInfo.lecture}
-                    professor={lectureInfo.professor}
-                    time={lectureInfo.time}
-                    location={lectureInfo.location}
-                    details={lectureInfo.details}
-                  />
-                ))}
+                {lectures
+                  .filter((lectureInfo) => lectureInfo.lecture.includes(searchLecture))
+                  .map((lectureInfo, index) => (
+                    <LectureCard
+                      key={index}
+                      lecture={lectureInfo.lecture}
+                      professor={lectureInfo.professor}
+                      time={lectureInfo.time}
+                      location={lectureInfo.location}
+                      details={lectureInfo.details}
+                    />
+                  ))}
               </div>
             </div>
           </div>
