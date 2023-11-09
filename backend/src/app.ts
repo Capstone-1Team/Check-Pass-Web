@@ -114,10 +114,11 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
       .status(200)
       .json({ message: '로그인에 성공했습니다.', redirectUrl: `http://localhost:3000/main/${userdata[3]}` });
 
+// 강의의 이름으로 Uid를 가져오는 함수 (ex. 캡스톤 디자인 -> 441...)
   async function getLectureUid(lectureName:any){
     const UserInputlecture = lectureName // 사용자에게 입력받은 강의 이름 
     console.log(UserInputlecture);
-    var lectureUid = "";
+    let lectureUid = "";
     try{
       const lectureDocRef = db.collection('LECTURES'); // 사용자가 출석체크하고자 하는 강의의 UID를 찾습니다.
       const getlectureUid = await lectureDocRef.where('LECTURE_NAME','==',lectureName).get();
@@ -147,11 +148,13 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
   // 새로운 강의 데이터 추가 (임시)_ POST로 변경필요
   app.get('/api/newUserLectureInsert', async (req: Request, res: Response, next) => {
     const Uid = userUid;
+    const Lecturename = '캡스톤디자인Ⅰ'; // 해당 부분을 Post로 받아와야 합니다. (강의 이름 or 강의 Uid)
     if (Uid==""){
       console.log("USER_UID 비어있음");
       return null;
     }
-    const New_LectruesUID = await getLectureUid('캡스톤 디자인');
+    const New_LectruesUID = await getLectureUid(Lecturename);
+    //'캡스톤디자인Ⅰ' 이라 적혀있는 곳을 사용자가 입력(선택)한 강의로 입력을 받아와 함수로 넘겨줘야 합니다.
     console.log("NewLecturesUID = ",New_LectruesUID);
     console.log("USER_UID = ", Uid);
     try{
@@ -166,33 +169,28 @@ app.post('/api/signIn', async (req: Request, res: Response, next: NextFunction) 
           await userdocRef.update({
             LECTURES: [New_LectruesUID]
           });
-          console.log("정상적으로 데이터 추가가 완료되었습니다.");
-          // const New_LectruesString: string = New_LectruesUID;
-          // const AttendancedocRef = await db.collection('ATTENDANCE').doc(New_LectruesString);
-          // const AttendanceDoc = await AttendancedocRef.get();
-          // const userdata: any[] = [];
-          // if (!AttendanceDoc.exists) {
-          //   return res.status(401).json({ message: '강의에 대한 유저를 찾을 수 없습니다' });
-          // } else {
-          //   const LectureData: any = AttendanceDoc.data();
-          //   userdata.push(LectureData.userUid);
-          //   console.log(userdata);
-          //   if (userdata.length === 0) {
-          //     return res.status(204).json({ message: '사용자의 강의 데이터가 비어있습니다.', redirectUrl: "http://localhost:3000/main" });
-          //   }
-          //   console.log("강의에 대한 출석체크 리스트 :", userdata);
-          // }
-          return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+          const returnval = newLecturesAttendance(New_LectruesUID); // 해당 사용자의 출석정보를 실시간DB에 신규생성
+          if(await returnval===true){
+            console.log("정상적으로 데이터 추가가 완료되었습니다.");
+            return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+          }else{
+            res.status(500).json({ message: "강의 데이터 추가 중 오류가 발생했습니다." });
+          }
         } else if (!userLectures.includes(New_LectruesUID)) {
           userLectures.push(New_LectruesUID);
           await userdocRef.update({
             LECTURES: userLectures
           });
-          console.log("정상적으로 데이터 추가가 완료되었습니다.");
-          return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+          const returnval = newLecturesAttendance(New_LectruesUID); // 해당 사용자의 출석정보를 실시간DB에 신규생성
+          if(await returnval===true){
+            console.log("정상적으로 데이터 추가가 완료되었습니다.");
+            return res.status(201).json({ message: "강의 데이터 추가가 완료되었습니다." });
+          }else{
+            res.status(500).json({ message: "강의 데이터 추가 중 오류가 발생했습니다." });
+          }
         }else{
           console.log("이미 추가된 강의입니다.");
-          return res.status(200).json({ message: "이미 추가된 강의입니다." });
+          return res.status(204).json({ message: "이미 추가된 강의입니다." });
         }
       }
     } catch(error){
@@ -234,24 +232,43 @@ app.get('/api/lecture',async (req: Request, res: Response, next: NextFunction) =
   try {
     const userDocRef = db.collection('USERS').doc(Uid); // 해당 uid에 대한 사용자 정보를 가져옵니다.
     const userDoc = await userDocRef.get();
+    const UserData: any = userDoc.data();
     const userdata: any[]=[];
     if (!userDoc.exists) {
       return res.status(401).json({ message: '유저를 찾을 수 없습니다.' });
     } else {
-      const Data: any = userDoc.data();
-      userdata.push(Data.USER_NAME);
-      userdata.push(Data.USER_NUMBER);
-      userdata.push(Data.LECTURES);
+      userdata.push(UserData.USER_NAME);
+      userdata.push(UserData.USER_NUMBER);
+      userdata.push(UserData.LECTURES);
       if (userdata[2] === null){
-        console.log(userdata);
-        return res.status(204).json({ message: '사용자의 강의 데이터가 비어있습니다.',redirectUrl: "http://localhost:3000/main" });
+        console.log("강의데이터가 비어있습니다.", userdata);
+        return res.status(204).json({ USER_NAME:userdata[0],
+          USER_NUMBER:userdata[1],
+          USER_LECTURES:userdata[2]
+        });
       }
     }
+    const lecturesData = [];
+    for (const lecture of userdata[2]) {
+        const lectureDocRef = db.collection('LECTURES').doc(lecture);
+        const lectureDoc = await lectureDocRef.get();
+        const LectureData: any = lectureDoc.data();
+        const lectureData = {
+            LECTUREUID:lecture,
+            LECTURE_NAME: LectureData.LECTURE_NAME,
+            PROFESSOR_NAME: LectureData.PROFESSOR_NAME,
+            LECTURE_ROOM: LectureData.LECTURE_ROOM,
+            DETAILS:LectureData.DETAILS,
+            LECTURE_TIMES:[LectureData.LECTURE_TIME1,LectureData.LECTURE_TIME2]
+        };
+        lecturesData.push(lectureData);
+    }
+    userdata.push(lecturesData);
     console.log(userdata);
     return res.status(200).json({
         USER_NAME:userdata[0],
         USER_NUMBER:userdata[1],
-        USER_LECTURES:userdata[2]})
+        USER_LECTURES:userdata[3]});
   } catch (error) {
     console.error('유저 UID 에러 :', error);
     return res.status(403).json({ message: '로그인 정보를 찾을 수 없습니다',redirectUrl: "http://localhost:3000"});
