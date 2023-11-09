@@ -277,6 +277,50 @@ app.get('/api/getAllUsers', async (req: Request, res: Response) => {
   }
 });
 
+//문자열 랜덤 생성 함수
+function generateRandomString() {
+  let characters = '0123456789';
+  let result = '';
+  for (let i = 0; i < 4; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+// 임시 저장 전역변수 
+let LectureUid = ""; // 임시로 생성한 변수로, 강의 Uid를 담아줍니다 (추후 삭제예정)
+let RandomString=""; // 임시로 생성한 변수로, 랜덤으로 생성된 문자열을 임시 저장합니다(추후 삭제예정)
+
+// 전자출결 랜덤 문자열 생성해주기 _ Post로 수정필요
+app.get('/api/getRandom', async (req: Request, res: Response) => {
+  const randomString = generateRandomString(); //랜덤 문자열 생성 
+  console.log(randomString);
+  let lectureName = '캡스톤디자인Ⅰ'; // 사용자에게 과목 선택으로 입력 받아와야 함 
+  const timeStamp = admin.firestore.Timestamp.fromDate(new Date(Date.now()));
+  const fiveMinutesLater = admin.firestore.Timestamp.fromDate(new Date(Date.now() + 5 * 60000 )); // 5분은 60000밀리초로 곱해줍니다.
+  console.log(timeStamp, fiveMinutesLater);
+  let lectureUid = "";
+  try{
+    const lectureDocRef = db.collection('LECTURES'); // 사용자가 출석체크하고자 하는 강의의 UID를 찾습니다.
+    const getlectureUid = await lectureDocRef.where('LECTURE_NAME','==',lectureName).get();
+    getlectureUid.forEach((doc) => {
+      lectureUid = doc.id;
+    });
+    LectureUid= lectureUid; // (임시) 전역변수에 데이터 임시 저장_Uid
+    RandomString=randomString; //(임시) 전역변수에 데이터 임시저장_RandomString
+    console.log(lectureName, LectureUid);
+    
+    const docRef = await db.collection('E-ATTENDANCE').doc(lectureUid).set({
+      RANDOM_CODE:randomString,
+      START_STAMP:timeStamp,
+      END_STAMP:fiveMinutesLater
+    });
+    console.log('Random UID :',lectureName,' / RandomString : ', randomString, ' / 시작시간',  timeStamp, ' / 종료시간', fiveMinutesLater);
+    return res.status(201).json({message: "성공적으로 랜덤 문자열이 생성되었습니다.", }); // 사용자 등록이 성공한 경우 응답을 보냅니다.
+  }catch(error){
+    console.log(error);
+    return res.status(500).json({message: "랜덤 문자열 생성에 문제가 발생했습니다."});
+  }
+});
 
 // localhost이동 
 app.get('/',(req:Request, res:Response, next)=>{
