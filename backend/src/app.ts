@@ -423,6 +423,61 @@ app.get('/api/getUserAttendance', async (req: Request, res: Response) => {
   }
 });
 
+//  Post로 변경 필요합니다.
+app.get('/api/getAllUserAttendance',async (req:Request, res:Response, next)=>{
+  const LectureName = '캡스톤디자인Ⅰ'// 어떤 강의에 대한 출석 현황인지 데이터를 가져와야합니다 (해당 Post로 입력 받아야 합니다.)
+  const LectruesUID = await getLectureUid(LectureName); 
+  console.log(userUid, LectruesUID);
+  if(userUid===""){
+    res.status(403).json({ message: '잘못된 접근입니다.' });
+  }
+  const usersUID:any = [];
+  try {
+    // 데이터 읽기
+    onValue(child(dbRef, `Attendance/${LectruesUID}`), (snapshot) => {
+      let users:any = [];
+      if (snapshot.exists()) {
+        snapshot.forEach(doc => {
+          usersUID.push(doc.key);
+        });
+        console.log("값 추가 O");
+        console.log(`users Uid : ${usersUID}`)
+        const userData = usersUID.map(async (uid: string) => {
+          const userDoc = await db.collection('USERS').doc(uid).get();
+          const userData = userDoc.data();
+          const userAttendance:any = []; 
+          onValue(child(dbRef, `Attendance/${LectruesUID}/${uid}`), (snapshot) => {
+            if (snapshot.exists()) {
+              userAttendance.push(snapshot.val());
+            } else {
+              console.log("에러발생");
+              return null;    
+            }
+          });
+          if (userData) {
+            return {
+              [userData.USER_NAME]: {student_number: userData.USER_NUMBER, attendance_count:userAttendance}
+            };
+          } else {
+            return null;
+          }
+        });
+        Promise.all(userData).then(data => {
+          res.status(200).json(data);
+        }).catch(error => {
+          console.error('데이터를 불러오는 중 오류가 발생했습니다:', error);
+          res.status(500).json({ message: '서버 내부 오류' });
+        });
+      } else {
+        console.log("데이터 없음");
+      }
+    });
+  } catch (error) {
+    console.error('데이터를 읽는 중 오류가 발생했습니다:', error);
+    return res.status(500).json({ message: '서버 내부 오류' });
+  }
+});
+
 // localhost이동 
 app.get('/',(req:Request, res:Response, next)=>{
   console.log(userUid);
